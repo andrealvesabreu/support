@@ -1,0 +1,17 @@
+{
+	"autoload" : {
+		"psr-4" : {
+			"Inspire\\Support\\" : "src"
+		}
+	},
+	"name" : "inspire/support",
+	"type" : "library",
+	"description" : "Utilities for basic tasks, complements Inspire packages",
+	"license" : "MIT",
+	"require" : {
+		"php" : ">=7.4",
+		"illuminate/support" : "~8.83.0@stable",
+		"nette/utils" : "~3.2.7@stable",
+		"neitanod/forceutf8" : "~2.0@stable"
+	}
+}
