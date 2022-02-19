@@ -74,7 +74,7 @@ class Arrays extends \Illuminate\Support\Arr
         foreach ($input as $i => $value) {
             if (is_array($value)) {
                 if ($prefix === null) {
-                    $ar = array_merge($ar, self::rcPush($value, $i));
+                    $ar = array_merge($ar, self::rcPush($value, (string) $i));
                 } else {
                     $ar = array_merge($ar, self::rcPush($value, "{$prefix}_{$i}"));
                 }
