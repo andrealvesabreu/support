@@ -12,6 +12,6 @@
 		"php" : ">=7.4",
 		"nette/utils" : "~3.2.7@stable",
 		"neitanod/forceutf8" : "~2.0@stable",
-		"inspire/support" : "~0.1"
+		"illuminate/support" : "~8.83.1@stable"
 	}
 }
