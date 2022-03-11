@@ -19,30 +19,42 @@ class Xml extends XmlMessage
      */
     public function __construct($data)
     {
+        // Input XML
+        if (! is_string($data) || empty($data)) {
+            throw new \Exception("'data' must be a non-empty string.");
+        }
         /**
          * Load XML if URL is provided as XML
          */
         if (preg_match('~^https?://[^\s]+$~i', $data) || is_readable($data)) {
-            $xmlData = file_get_contents($data);
+            $xmlData = trim(file_get_contents($data));
         } else {
-            $xmlData = $data;
+            $xmlData = trim($data);
         }
-        // echo substr($xmlData, 0, 50) . PHP_EOL;
-        // if (! Strings::startsWith($xmlData, '<?xml')) {
-        /* $xmlData = "<?xml version=\"1.0\"?>{$xmlData}"; */
-        // }
-        // echo $xmlData . PHP_EOL;
-        // $xml = new \XMLReader();
-        // $xml->xml($xmlData);
-        // $xml->setParserProperty(\XMLReader::VALIDATE, true);
-        // while ($xml->read()) {
-        // if (! $xml->isValid()) {
-        // throw new \Exception("You must provide a valid XML.");
-        // }
-        // }
+        // Let's drop namespace definitions
+        if (stripos($xmlData, 'xmlns=') !== false) {
+            $xmlData = preg_replace('~[\s]+xmlns=[\'"].+?[\'"]~i', '', $xmlData);
+        }
+        // Change namespaced attributes
+        $matches = [];
+        if (preg_match_all('~xmlns:([a-z0-9]+)=~i', $xmlData, $matches)) {
+            $namespaces = array_unique($matches[1]);
+            foreach ($namespaces as $namespace) {
+                $escaped_namespace = preg_quote($namespace, '~');
+                $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=[\'].+?[\']~i', null, $xmlData);
+                $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=["].+?["]~i', null, $xmlData);
+                $xmlData = preg_replace('~([\'"\s])' . $escaped_namespace . ':~i', '$1' . $namespace . '_', $xmlData);
+            }
+        }
+        // Let's change <namespace:tag to <namespace_tag ns="namespace"
+        $regexfrom = sprintf('~<([a-z0-9]+):%s~is', null);
+        // $regexto = strlen($nsattr) ? '<$1_$2 ' . $nsattr . '="$1"' : '<$1_';
+        $xmlData = preg_replace($regexfrom, '', $xmlData);
+        // Let's change </namespace:tag> to </namespace_tag>
+        $xmlData = preg_replace('~</([a-z0-9]+):~is', '</$1_', $xmlData);
         libxml_use_internal_errors(true);
         libxml_clear_errors();
-        $this->xml = simplexml_load_string($xmlData);
+        $this->xml = simplexml_load_string($xmlData, '\SimpleXMLElement', LIBXML_COMPACT | LIBXML_NOBLANKS | LIBXML_NOCDATA);
         if (! empty(libxml_get_errors())) {
             throw new \Exception("You must provide a valid XML.");
         }
