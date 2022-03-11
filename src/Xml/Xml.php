@@ -17,7 +17,7 @@ class Xml extends XmlMessage
      * @param mixed $data
      * @throws \Exception
      */
-    public function __construct($data)
+    public function __construct($data, bool $clearNamespaces = false)
     {
         // Input XML
         if (! is_string($data) || empty($data)) {
@@ -31,27 +31,29 @@ class Xml extends XmlMessage
         } else {
             $xmlData = trim($data);
         }
-        // Let's drop namespace definitions
-        if (stripos($xmlData, 'xmlns=') !== false) {
-            $xmlData = preg_replace('~[\s]+xmlns=[\'"].+?[\'"]~i', '', $xmlData);
-        }
-        // Change namespaced attributes
-        $matches = [];
-        if (preg_match_all('~xmlns:([a-z0-9]+)=~i', $xmlData, $matches)) {
-            $namespaces = array_unique($matches[1]);
-            foreach ($namespaces as $namespace) {
-                $escaped_namespace = preg_quote($namespace, '~');
-                $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=[\'].+?[\']~i', null, $xmlData);
-                $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=["].+?["]~i', null, $xmlData);
-                $xmlData = preg_replace('~([\'"\s])' . $escaped_namespace . ':~i', '$1' . $namespace . '_', $xmlData);
+        if ($clearNamespaces) {
+            // Let's drop namespace definitions
+            if (stripos($xmlData, 'xmlns=') !== false) {
+                $xmlData = preg_replace('~[\s]+xmlns=[\'"].+?[\'"]~i', '', $xmlData);
             }
+            // Change namespaced attributes
+            $matches = [];
+            if (preg_match_all('~xmlns:([a-z0-9]+)=~i', $xmlData, $matches)) {
+                $namespaces = array_unique($matches[1]);
+                foreach ($namespaces as $namespace) {
+                    $escaped_namespace = preg_quote($namespace, '~');
+                    $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=[\'].+?[\']~i', null, $xmlData);
+                    $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=["].+?["]~i', null, $xmlData);
+                    $xmlData = preg_replace('~([\'"\s])' . $escaped_namespace . ':~i', '$1' . $namespace . '_', $xmlData);
+                }
+            }
+            // Let's change <namespace:tag to <namespace_tag ns="namespace"
+            $regexfrom = sprintf('~<([a-z0-9]+):%s~is', null);
+            // $regexto = strlen($nsattr) ? '<$1_$2 ' . $nsattr . '="$1"' : '<$1_';
+            $xmlData = preg_replace($regexfrom, '', $xmlData);
+            // Let's change </namespace:tag> to </namespace_tag>
+            $xmlData = preg_replace('~</([a-z0-9]+):~is', '</$1_', $xmlData);
         }
-        // Let's change <namespace:tag to <namespace_tag ns="namespace"
-        $regexfrom = sprintf('~<([a-z0-9]+):%s~is', null);
-        // $regexto = strlen($nsattr) ? '<$1_$2 ' . $nsattr . '="$1"' : '<$1_';
-        $xmlData = preg_replace($regexfrom, '', $xmlData);
-        // Let's change </namespace:tag> to </namespace_tag>
-        $xmlData = preg_replace('~</([a-z0-9]+):~is', '</$1_', $xmlData);
         libxml_use_internal_errors(true);
         libxml_clear_errors();
         $this->xml = simplexml_load_string($xmlData, '\SimpleXMLElement', LIBXML_COMPACT | LIBXML_NOBLANKS | LIBXML_NOCDATA);
