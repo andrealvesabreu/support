@@ -197,7 +197,7 @@ abstract class Message
     public function addExtra(array $extra)
     {
         foreach ($extra as $k => $v) {
-            $this->extra[$k] = $v;
+            Arrays::set($this->extra, $k, $v);
         }
     }
 
