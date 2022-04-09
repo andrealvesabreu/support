@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace Inspire\Support\Message\System;
 
 /**
+ * Description of SystemMessage
  *
  * @author aalves
  *        
@@ -18,7 +19,7 @@ class SystemMessage extends Message
      * @param int $code
      * @param bool $status
      */
-    public function __construct(string $message, string $systemCode, int $code = Message::MSG_OK, ?bool $status = null)
+    public function __construct(string $message, string $systemCode, int $code = Message::MSG_OK, ?bool $status = null, ?array $extra = null)
     {
         $this->message = $message;
         $this->systemCode = $systemCode;
@@ -28,6 +29,9 @@ class SystemMessage extends Message
             $this->status = $status;
         } else {
             $this->status = $code == Message::MSG_OK;
+        }
+        if ($extra !== null) {
+            $this->extra = $extra;
         }
     }
 }

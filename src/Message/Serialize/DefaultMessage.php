@@ -3,11 +3,10 @@ declare(strict_types = 1);
 namespace Inspire\Support\Message\Serialize;
 
 /**
- * Description of LoggerFactory
+ * Description of DefaultMessage
  *
  * @author aalves
  */
 abstract class DefaultMessage
 {
 }
-

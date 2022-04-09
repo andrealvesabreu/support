@@ -101,7 +101,7 @@ abstract class Message
                 return SystemMessage::get($this, $asArray);
             case Message::TYPE_HTTP:
                 return HttpMessage::get($this, $asArray);
-            case Message::TYPE_SYSTEM:
+            case Message::TYPE_EXCEPTION:
                 return ExceptionMessage::get($this, $asArray);
             default:
                 return new \RuntimeException("Unespected message type: {$this->type}");
@@ -184,20 +184,42 @@ abstract class Message
      *
      * @param array $extra
      */
-    public function setExtra(array $extra)
+    public function setExtra(string $extra, $value)
     {
-        $this->extra = $extra;
+        Arrays::set($this->extra, $extra, $value);
     }
 
     /**
-     * Set extra data
+     * Set extra data from array
      *
      * @param array $extra
      */
-    public function addExtra(array $extra)
+    public function setExtras(array $extra)
     {
         foreach ($extra as $k => $v) {
             Arrays::set($this->extra, $k, $v);
+        }
+    }
+
+    /**
+     * Add extra data
+     *
+     * @param array $extra
+     */
+    public function addExtra(string $extra, $value)
+    {
+        Arrays::add($this->extra, $extra, $value);
+    }
+
+    /**
+     * Add extra data from array
+     *
+     * @param array $extra
+     */
+    public function addExtras(array $extra)
+    {
+        foreach ($extra as $k => $v) {
+            Arrays::add($this->extra, $k, $v);
         }
     }
 

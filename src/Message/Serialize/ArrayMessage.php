@@ -16,7 +16,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
 
     /**
      *
-     * @param array $data
+     * @param mixed $data
      */
     public function __construct($data)
     {
@@ -24,7 +24,6 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
-     * Return constents serialized as JSON
      *
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
@@ -35,7 +34,6 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
-     * Desserialize JSON data
      *
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
@@ -51,13 +49,25 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::set()
      */
-    public function set(string $field, string $value): ?array
+    public function set(string $field, $value): ?array
     {
         return Arrays::set($this->data, $field, $value);
     }
 
     /**
-     * Get all data
+     * Set field in data
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::setList()
+     */
+    public function setList(array $list): ?array
+    {
+        foreach ($list as $k => $v) {
+            Arrays::set($this->data, $k, $v);
+        }
+    }
+
+    /**
      *
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::getData()
@@ -68,7 +78,6 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
-     * Return data from specified field
      *
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::get()
@@ -79,14 +88,35 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
-     * Add field in data if it does't exists
      *
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::add()
      */
-    public function add(string $field, string $value)
+    public function add(string $field, $value)
     {
         return Arrays::add($this->data, $field, $value);
+    }
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::addList()
+     */
+    public function addList(array $list)
+    {
+        foreach ($list as $k => $v) {
+            Arrays::set($this->data, $k, $v);
+        }
+    }
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::clear()
+     */
+    public function clear()
+    {
+        $this->data = [];
     }
 }
 

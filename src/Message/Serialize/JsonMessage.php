@@ -11,10 +11,9 @@ class JsonMessage extends ArrayMessage implements MessageInterface
 {
 
     /**
-     * Return constents serialized as JSON
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
+     * @see \Inspire\Support\Message\Serialize\ArrayMessage::serialize()
      */
     public function serialize(): ?string
     {
@@ -22,10 +21,9 @@ class JsonMessage extends ArrayMessage implements MessageInterface
     }
 
     /**
-     * Desserialize JSON data
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
+     * @see \Inspire\Support\Message\Serialize\ArrayMessage::unserialize()
      */
     public function unserialize($data)
     {

@@ -2,6 +2,9 @@
 declare(strict_types = 1);
 namespace Inspire\Support\Message\Serialize;
 
+use Inspire\Support\Xml\Array2XML;
+use Inspire\Support\Xml\Xml;
+
 /**
  * Description of XmlMessage
  *
@@ -12,7 +15,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
 
     /**
      *
-     * @param XML $data
+     * @param mixed $data
      */
     public function __construct($data)
     {
@@ -20,10 +23,9 @@ class XmlMessage extends ArrayMessage implements MessageInterface
     }
 
     /**
-     * Return constents serialized as JSON
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
+     * @see \Inspire\Support\Message\Serialize\ArrayMessage::serialize()
      */
     public function serialize(): ?string
     {
@@ -31,10 +33,9 @@ class XmlMessage extends ArrayMessage implements MessageInterface
     }
 
     /**
-     * Desserialize JSON data
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
+     * @see \Inspire\Support\Message\Serialize\ArrayMessage::unserialize()
      */
     public function unserialize($data)
     {
@@ -46,13 +47,23 @@ class XmlMessage extends ArrayMessage implements MessageInterface
     }
 
     /**
-     * Convert array to XML
+     * Return XML with array data
      *
-     * @return string XML
+     * @param string $root
+     * @param bool $asXmlObj
+     * @return \Inspire\Support\Xml\Xml|string
      */
-    public function toXml(): ?string
+    public function toXml(?string $root = null, bool $asXmlObj = false)
     {
-        $root = array_keys($this->data)[0];
-        return \Inspire\Support\Xml\Array2XML::createXML($root, $this->data[$root])->saveXML();
+        $data = $this->data;
+        if (($root === null || empty($root)) && count($data) == 1) {
+            $root = array_keys($data)[0];
+            $data = $data[$root];
+        }
+        $xml = Array2XML::createXML($root, $data)->saveXML();
+        if ($asXmlObj) {
+            return new Xml($xml);
+        }
+        return $xml;
     }
 }

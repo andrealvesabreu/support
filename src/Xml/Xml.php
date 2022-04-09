@@ -5,7 +5,7 @@ namespace Inspire\Support\Xml;
 use Inspire\Support\Message\Serialize\XmlMessage;
 
 /**
- * Description of Parser
+ * Description of Xml
  *
  * @author aalves
  */
