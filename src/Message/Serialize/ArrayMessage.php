@@ -21,6 +21,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     public function __construct($data)
     {
         $this->data = $data;
+        $this->generateUUID(4);
     }
 
     /**

@@ -33,6 +33,7 @@ class SystemMessage extends Message
         if ($extra !== null) {
             $this->extra = $extra;
         }
+        $this->generateUUID(4);
     }
 }
 

@@ -20,6 +20,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
     public function __construct($data)
     {
         $this->data = \Inspire\Support\Xml\XML2Array::createArray($data);
+        $this->generateUUID(4);
     }
 
     /**

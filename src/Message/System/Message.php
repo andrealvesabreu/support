@@ -91,6 +91,32 @@ abstract class Message
     protected ?array $extra = null;
 
     /**
+     * Message UUID
+     *
+     * @var string|NULL
+     */
+    protected ?string $UUID = null;
+
+    /**
+     * Generate an UUID for message
+     *
+     * @param int $version
+     * @throws \RuntimeException
+     */
+    protected function generateUUID(int $version)
+    {
+        if ($version > 0 && $version < 7) {
+            $method = "Uuid{$version}";
+            $this->UUID = (call_user_func([
+                '\\Ramsey\\Uuid\\Uuid',
+                $method
+            ]))->toString();
+        } else {
+            throw new \RuntimeException("Unespected UUID version: {$version}");
+        }
+    }
+
+    /**
      *
      * @return Message|array|\RuntimeException
      */
@@ -104,7 +130,7 @@ abstract class Message
             case Message::TYPE_EXCEPTION:
                 return ExceptionMessage::get($this, $asArray);
             default:
-                return new \RuntimeException("Unespected message type: {$this->type}");
+                throw new \RuntimeException("Unespected message type: {$this->type}");
         }
     }
 
@@ -121,7 +147,8 @@ abstract class Message
             'message' => $message->message,
             'sys_code' => $message->systemCode,
             'status' => $message->status,
-            'extra' => $message->extra ?? null
+            'extra' => $message->extra ?? null,
+            'uuid' => $message->UUID
         ];
     }
 
