@@ -31,7 +31,9 @@ class HttpMessage extends Message
         if ($extra !== null) {
             $this->extra = $extra;
         }
-        $this->generateUUID(4);
+        if (Message::$generateUuid) {
+            $this->generateUUID(4);
+        }
     }
 
     /**

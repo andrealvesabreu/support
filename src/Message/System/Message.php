@@ -98,6 +98,12 @@ abstract class Message
     protected ?string $UUID = null;
 
     /**
+     *
+     * @var boolean
+     */
+    protected static $generateUuid = true;
+
+    /**
      * Generate an UUID for message
      *
      * @param int $version
@@ -120,18 +126,27 @@ abstract class Message
      *
      * @return Message|array|\RuntimeException
      */
-    public function getMessage(bool $asArray = true)
+    public function getMessage()
     {
         switch ($this->type) {
             case Message::TYPE_SYSTEM:
-                return SystemMessage::get($this, $asArray);
+                return SystemMessage::get($this);
             case Message::TYPE_HTTP:
-                return HttpMessage::get($this, $asArray);
+                return HttpMessage::get($this);
             case Message::TYPE_EXCEPTION:
-                return ExceptionMessage::get($this, $asArray);
+                return ExceptionMessage::get($this);
             default:
                 throw new \RuntimeException("Unespected message type: {$this->type}");
         }
+    }
+
+    /**
+     *
+     * @param bool $useUuid
+     */
+    public static function useUuid(bool $useUuid)
+    {
+        Message::$generateUuid = $useUuid;
     }
 
     /**

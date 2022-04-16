@@ -18,6 +18,7 @@ class SystemMessage extends Message
      * @param string $systemCode
      * @param int $code
      * @param bool $status
+     * @param array $extra
      */
     public function __construct(string $message, string $systemCode, int $code = Message::MSG_OK, ?bool $status = null, ?array $extra = null)
     {
@@ -33,7 +34,9 @@ class SystemMessage extends Message
         if ($extra !== null) {
             $this->extra = $extra;
         }
-        $this->generateUUID(4);
+        if (Message::$generateUuid) {
+            $this->generateUUID(4);
+        }
     }
 }
 
