@@ -83,7 +83,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::get()
      */
-    public function get(string $field, ?string $default = null)
+    public function get(string $field, $default = null)
     {
         return Arrays::get($this->data, $field, $default);
     }
