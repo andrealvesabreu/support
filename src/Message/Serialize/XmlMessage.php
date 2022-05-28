@@ -35,6 +35,18 @@ class XmlMessage extends ArrayMessage implements MessageInterface
 
     /**
      *
+     * PHP 8.1 support
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
+     */
+    public function __serialize(): ?string
+    {
+        return $this->serialize();
+    }
+
+    /**
+     *
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\ArrayMessage::unserialize()
      */
@@ -45,6 +57,17 @@ class XmlMessage extends ArrayMessage implements MessageInterface
         } else {
             $this->data = null;
         }
+    }
+
+    /**
+     * PHP 8.1 support
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
+     */
+    public function __unserialize($data)
+    {
+        $this->__unserialize($data);
     }
 
     /**

@@ -36,12 +36,35 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
 
     /**
      *
+     * PHP 8.1 support
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
+     */
+    public function __serialize(): ?string
+    {
+        return $this->serialize();
+    }
+
+    /**
+     *
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
      */
     public function unserialize($data)
     {
         $this->data = unserialize($data);
+    }
+
+    /**
+     * PHP 8.1 support
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
+     */
+    public function __unserialize($data)
+    {
+        $this->__unserialize($data);
     }
 
     /**
