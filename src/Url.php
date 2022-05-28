@@ -47,7 +47,7 @@ class Url
      */
     public static function headers(string $url, int $header)
     {
-        $headers = get_headers($url, 1);
+        $headers = get_headers($url, true);
         switch ($header) {
             //
             case Url::HTTP_CODE:
