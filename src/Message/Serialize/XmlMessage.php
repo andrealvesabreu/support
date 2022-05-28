@@ -28,9 +28,12 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\ArrayMessage::serialize()
      */
-    public function serialize(): ?string
+    public function serialize(): ?array
     {
-        return json_encode($this->data, JSON_UNESCAPED_UNICODE);
+        $unserialized = json_encode($this->data, JSON_UNESCAPED_UNICODE);
+        return ! is_array($unserialized) && ! empty($unserialized) ? [
+            $unserialized
+        ] : [];
     }
 
     /**
@@ -38,11 +41,11 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      * PHP 8.1 support
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::__serialize()
      */
-    public function __serialize(): ?string
+    public function __serialize(): array
     {
-        return $this->serialize();
+        return $this->serialize() ?? [];
     }
 
     /**
@@ -50,7 +53,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\ArrayMessage::unserialize()
      */
-    public function unserialize($data)
+    public function unserialize($data): void
     {
         if ($this->load($data)) {
             $this->data = $this->xml;
@@ -63,9 +66,9 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      * PHP 8.1 support
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::__unserialize()
      */
-    public function __unserialize($data)
+    public function __unserialize($data): void
     {
         $this->__unserialize($data);
     }

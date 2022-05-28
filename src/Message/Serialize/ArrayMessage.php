@@ -29,7 +29,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
      */
-    public function serialize(): ?string
+    public function serialize(): ?array
     {
         return serialize($this->data);
     }
@@ -39,11 +39,11 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * PHP 8.1 support
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::__serialize()
      */
-    public function __serialize(): ?string
+    public function __serialize(): array
     {
-        return $this->serialize();
+        return $this->serialize() ?? [];
     }
 
     /**
@@ -51,7 +51,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
      */
-    public function unserialize($data)
+    public function unserialize($data): void
     {
         $this->data = unserialize($data);
     }
@@ -60,9 +60,9 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * PHP 8.1 support
      *
      * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
+     * @see \Inspire\Support\Message\Serialize\MessageInterface::__unserialize()
      */
-    public function __unserialize($data)
+    public function __unserialize($data): void
     {
         $this->__unserialize($data);
     }

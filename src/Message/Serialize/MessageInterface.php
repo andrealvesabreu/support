@@ -22,28 +22,30 @@ interface MessageInterface
      *
      * @return string|NULL
      */
-    public function serialize(): ?string;
+    public function serialize(): ?array;
 
     /**
      * Unserialize data and populate its properties
      *
      * @param mixed $data
      */
-    public function unserialize($data);
-    
+    public function unserialize($data): void;
+
     /**
-     * Serialize all data as string. PHP 8.1 support
+     * Serialize all data as string.
+     * PHP 8.1 support
      *
      * @return string|NULL
      */
-    public function __serialize(): ?string;
-    
+    public function __serialize(): array;
+
     /**
-     * Unserialize data and populate its properties. PHP 8.1 support
+     * Unserialize data and populate its properties.
+     * PHP 8.1 support
      *
      * @param mixed $data
      */
-    public function __unserialize($data);
+    public function __unserialize($data): void;
 
     /**
      * Get all data
