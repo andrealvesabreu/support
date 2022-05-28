@@ -29,7 +29,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
      */
-    public function serialize(): ?array
+    public function serialize(): ?string
     {
         return serialize($this->data);
     }
@@ -43,7 +43,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      */
     public function __serialize(): array
     {
-        return $this->serialize() ?? [];
+        return $this->data;
     }
 
     /**
@@ -64,7 +64,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      */
     public function __unserialize($data): void
     {
-        $this->__unserialize($data);
+        $this->unserialize($data);
     }
 
     /**

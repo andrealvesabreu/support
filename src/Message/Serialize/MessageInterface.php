@@ -22,7 +22,7 @@ interface MessageInterface
      *
      * @return string|NULL
      */
-    public function serialize(): ?array;
+    public function serialize(): ?string;
 
     /**
      * Unserialize data and populate its properties

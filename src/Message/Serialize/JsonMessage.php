@@ -15,24 +15,9 @@ class JsonMessage extends ArrayMessage implements MessageInterface
      * {@inheritdoc}
      * @see \Inspire\Support\Message\Serialize\ArrayMessage::serialize()
      */
-    public function serialize(): ?array
+    public function serialize(): ?string
     {
-        $unserialized = json_encode($this->data, JSON_UNESCAPED_UNICODE);
-        return ! is_array($unserialized) && ! empty($unserialized) ? [
-            $unserialized
-        ] : [];
-    }
-
-    /**
-     *
-     * PHP 8.1 support
-     *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::__serialize()
-     */
-    public function __serialize(): array
-    {
-        return $this->serialize() ?? [];
+        return json_encode($this->data, JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -43,17 +28,6 @@ class JsonMessage extends ArrayMessage implements MessageInterface
     public function unserialize($data): void
     {
         $this->data = json_decode($data, true);
-    }
-
-    /**
-     * PHP 8.1 support
-     *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::__unserialize()
-     */
-    public function __unserialize($data): void
-    {
-        $this->__unserialize($data);
     }
 }
 
