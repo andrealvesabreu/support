@@ -90,7 +90,14 @@ class Url
     ]): bool
     {
         $prot = implode('|', array_map('trim', $protocols));
-        return boolval(preg_match("/^(({$prot})\:\/\/)?([a-z0-9A-Z]+\.[a-z0-9A-Z]+\.[a-z0-9A-Z]+\.[a-zA-Z]{2,4}|[a-z0-9A-Z]+\.[a-z0-9A-Z]+\.[a-zA-Z]{2,4}|[a-z0-9A-Z]+\.[a-zA-Z]{2,4})$/i", $url));
+        $regex = "(({$prot})\:\/\/)?";
+        $regex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";
+        $regex .= "([a-z0-9-.]*)\.([a-z]{2,3})";
+        $regex .= "(\:[0-9]{2,5})?";
+        $regex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";
+        $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?";
+        $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?";
+        return boolval(preg_match("/^$regex$/i", $url));
     }
 
     /**
