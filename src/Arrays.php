@@ -98,7 +98,7 @@ class Arrays extends \Illuminate\Support\Arr
      *            The array to join elements
      * @return string
      */
-    public static function rcImplode(string $separator = ',', array $input): ?string
+    public static function rcImplode(string $separator, array $input): ?string
     {
         $arr = [];
         foreach ($input as $ar) {
