@@ -10,6 +10,11 @@ namespace Inspire\Support;
 class Arrays extends \Illuminate\Support\Arr
 {
 
+    public static $count = [
+        'num' => 0,
+        'calls' => 0
+    ];
+
     /**
      * Merge arrays removing all duplicated values
      * Before remove duplicated values, it will merge all arrays into a single array
@@ -180,26 +185,26 @@ class Arrays extends \Illuminate\Support\Arr
      * @param array $model
      * @return array
      */
-    public static function sortByModel(array $data, array $model): array
+    public static function sortByModel(array $model, array $data): array
     {
         $tmp = [];
-        foreach ($data as $k => $v) {
-            if (is_int($k) && is_array($v)) {
-                $tmp[$k] = self::sortByModel($v, $model[0] ?? $model);
-            } else {
-                foreach ($model as $km => $vm) {
-                    if (is_array($vm)) {
-                        if (is_int($km)) {
-                            $tmp[$km] = self::sortByModel($v, $vm);
+        foreach ($model as $k => $v) {
+            if (is_array($v)) {
+                if (isset($data[0]) || (isset($data[$k]) && isset($data[$k][0]))) {
+                    $tmp[$k] = [];
+                    $iterate = isset($data[0]) ? $data : $data[$k];
+                    foreach ($iterate as $d) {
+                        if (is_array($d)) {
+                            $tmp[$k][] = self::sortByModel($v, $d);
                         } else {
-                            if (self::keyCheck($km, $data)) {
-                                $tmp[$km] = self::sortByModel($data[$km], $vm);
-                            }
+                            $tmp[$k][] = $d;
                         }
-                    } else if (self::keyCheck($km, $data)) {
-                        $tmp[$km] = $data[$km];
                     }
+                } else if (isset($data[$k])) {
+                    $tmp[$k] = self::sortByModel($v, $data[$k]);
                 }
+            } else if (isset($data[$k])) {
+                $tmp[$k] = $data[$k];
             }
         }
         return $tmp;
