@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\Serialize;
 
 use Inspire\Support\Xml\Array2XML;
@@ -17,34 +19,49 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      *
      * @param mixed $data
      */
-    public function __construct($data)
+    public function __construct($data, $uuid = false)
     {
-        $this->data = \Inspire\Support\Xml\XML2Array::createArray($data);
-        $this->generateUUID(4);
+        if (is_array($data)) {
+            $this->data = $data;
+        } else if (is_string($data) && !empty($data)) {
+            $this->data = \Inspire\Support\Xml\XML2Array::createArray($data);
+        }
+        /**
+         * Generate UUID for message
+         */
+        if ($uuid !== false) {
+            if (is_int($uuid)) {
+                $uuid_version = intval($uuid);
+                if ($uuid_version > 0 && $uuid_version < 6) {
+                    $this->generateUUID($uuid_version);
+                } else {
+                    $this->generateUUID(4);
+                }
+            } else {
+                $this->generateUUID(4);
+            }
+        }
     }
 
     /**
+     * Serialize object (return XML compiled)
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\ArrayMessage::serialize()
+     * @return string|null
      */
     public function serialize(): ?string
     {
-        return json_encode($this->data, JSON_UNESCAPED_UNICODE);
+        return \Inspire\Support\Xml\Xml::arrayToXml($this->data);
     }
 
     /**
+     * Unserialize data, returning a new instance of this class
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\ArrayMessage::unserialize()
+     * @param [type] $data
+     * @return XmlMessage
      */
-    public function unserialize($data): void
+    public static function unserialize($data): XmlMessage
     {
-        if ($this->load($data)) {
-            $this->data = $this->xml;
-        } else {
-            $this->data = null;
-        }
+        return new static($data);
     }
 
     /**

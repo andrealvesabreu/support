@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support;
 
 /**
@@ -49,13 +51,13 @@ class Url
     {
         $headers = get_headers($url, true);
         switch ($header) {
-            //
+                //
             case Url::HTTP_CODE:
                 return strpos($headers[0], '200') > 0;
-            //
+                //
             case Url::CONTENT_TYPE:
                 return $headers['Content-Type'] ?? null;
-            //
+                //
             case Url::CONTENT_LENGTH:
                 return $headers['Content-Length'] ?? null;
         }
@@ -121,4 +123,3 @@ class Url
         return $data;
     }
 }
-

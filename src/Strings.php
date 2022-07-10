@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support;
 
 /**
@@ -35,10 +37,10 @@ class Strings extends \Illuminate\Support\Str
     {
         $pMask = strlen($mask) - 1;
         $output = '';
-        for ($a = strlen($str) - 1; $a >= 0; $a --, $pMask --) {
-            if (! ctype_alnum(substr($mask, $pMask, 1))) {
+        for ($a = strlen($str) - 1; $a >= 0; $a--, $pMask--) {
+            if (!ctype_alnum(substr($mask, $pMask, 1))) {
                 $output .= substr($mask, $pMask, 1);
-                $pMask --;
+                $pMask--;
             }
             if ($pMask > 0) {
                 $output .= substr($str, $a, 1);
@@ -140,7 +142,7 @@ class Strings extends \Illuminate\Support\Str
     public static function integer(string $string, bool $empty = false): string
     {
         $val = preg_replace('/[^0-9]/', '', $string);
-        if (! $empty) {
+        if (!$empty) {
             $val = empty($val) ? '0' : $val;
         }
         return $val;
@@ -175,7 +177,7 @@ class Strings extends \Illuminate\Support\Str
     {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
-        for ($i = 0; $i < $length; ++ $i) {
+        for ($i = 0; $i < $length; ++$i) {
             $str .= $keyspace[rand(0, $max)];
         }
         return $str;
@@ -219,4 +221,3 @@ class Strings extends \Illuminate\Support\Str
         return \voku\helper\ASCII::to_ascii((string) $value, $language);
     }
 }
-

@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\Serialize;
 
 /**
@@ -29,23 +31,7 @@ interface MessageInterface
      *
      * @param mixed $data
      */
-    public function unserialize($data): void;
-
-    /**
-     * Serialize all data as string.
-     * PHP 8.1 support
-     *
-     * @return string|NULL
-     */
-    public function __serialize(): array;
-
-    /**
-     * Unserialize data and populate its properties.
-     * PHP 8.1 support
-     *
-     * @param mixed $data
-     */
-    public function __unserialize($data): void;
+    public static function unserialize($data): DefaultMessage;
 
     /**
      * Get all data
@@ -97,4 +83,3 @@ interface MessageInterface
      */
     public function clear();
 }
-

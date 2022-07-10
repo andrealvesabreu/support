@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support;
 
 /**
@@ -119,7 +121,7 @@ class Date extends \Nette\Utils\DateTime
      */
     public static function tzdBR(string $UF = "DF"): ?string
     {
-        if ($UF === null || empty($UF) || ! self::keyCheck($UF, self::$tzUFlist)) {
+        if ($UF === null || empty($UF) || !self::keyCheck($UF, self::$tzUFlist)) {
             return null;
         }
         date_default_timezone_set(self::$tzUFlist[$UF]);

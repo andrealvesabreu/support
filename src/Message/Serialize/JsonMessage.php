@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\Serialize;
 
 /**
@@ -11,9 +13,21 @@ class JsonMessage extends ArrayMessage implements MessageInterface
 {
 
     /**
+     * Constructor can receive data serialized or array
+     * 
+     * @param mixed $data
+     */
+    public function __construct($data, $uuid = false)
+    {
+        if (is_string($data) && !empty($data)) {
+            $data = json_decode($data, true);
+        }
+        parent::__construct($data, $uuid);
+    }
+    /**
+     * Serialize object
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\ArrayMessage::serialize()
+     * @return string|null
      */
     public function serialize(): ?string
     {
@@ -21,13 +35,13 @@ class JsonMessage extends ArrayMessage implements MessageInterface
     }
 
     /**
+     * Unserialize data, returning a new instance of this class
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\ArrayMessage::unserialize()
+     * @param [type] $data
+     * @return JsonMessage
      */
-    public function unserialize($data): void
+    public static function unserialize($data): JsonMessage
     {
-        $this->data = json_decode($data, true);
+        return new static($data);
     }
 }
-

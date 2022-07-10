@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\System;
 
 use Inspire\Support\Arrays;
@@ -275,4 +277,3 @@ abstract class Message
         return $this->status;
     }
 }
-

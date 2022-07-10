@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\System;
 
 /**
@@ -118,4 +120,3 @@ class HttpMessage extends Message
         499 => 'Client Closed Request'
     ];
 }
-

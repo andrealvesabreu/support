@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OpenLSS - Lighter Smarter Simpler
  *
@@ -18,7 +19,9 @@
  *    GNU Lesser General Public License along with OpenLSS.
  *    If not, see <http://www.gnu.org/licenses/>.
  */
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Xml;
 
 /**
@@ -144,7 +147,7 @@ class Array2XML
             // get the attributes first.;
             if (isset($arr['@attributes'])) {
                 foreach ($arr['@attributes'] as $key => $value) {
-                    if (! self::isValidTagName($key)) {
+                    if (!self::isValidTagName($key)) {
                         throw new \Exception('[Array2XML] Illegal character in attribute name. attribute: ' . $key . ' in node: ' . $node_name);
                     }
                     $node->setAttribute($key, self::bool2str($value));
@@ -157,12 +160,12 @@ class Array2XML
             if (isset($arr['@value'])) {
                 $node->appendChild($xml->createTextNode(self::bool2str($arr['@value'])));
                 unset($arr['@value']); // remove the key from the array once done.
-                                       // return from recursion, as a note with value cannot have child nodes.
+                // return from recursion, as a note with value cannot have child nodes.
                 return $node;
             } else if (isset($arr['@cdata'])) {
                 $node->appendChild($xml->createCDATASection(self::bool2str($arr['@cdata'])));
                 unset($arr['@cdata']); // remove the key from the array once done.
-                                       // return from recursion, as a note with cdata cannot have child nodes.
+                // return from recursion, as a note with cdata cannot have child nodes.
                 return $node;
             } else if (isset($arr['@comment']) && is_string($arr['@comment'])) {
                 $node->appendChild($xml->createComment(self::bool2str($arr['@comment'])));
@@ -180,7 +183,7 @@ class Array2XML
         if (is_array($arr)) {
             // recurse to get the node for that key
             foreach ($arr as $key => $value) {
-                if (! self::isValidTagName($key)) {
+                if (!self::isValidTagName($key)) {
                     throw new \Exception('[Array2XML] Illegal character in tag name. tag: ' . $key . ' in node: ' . $node_name);
                 }
                 if (is_array($value) && is_numeric(key($value))) {
@@ -200,7 +203,7 @@ class Array2XML
 
         // after we are done with all the keys in the array (if it is one)
         // we check if it has any text value, if yes, append it.
-        if (! is_array($arr)) {
+        if (!is_array($arr)) {
             $node->appendChild($xml->createTextNode(self::bool2str($arr)));
         }
 

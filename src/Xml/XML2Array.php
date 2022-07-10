@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  OpenLSS - Lighter Smarter Simpler
  *
@@ -18,7 +19,9 @@
  *	GNU Lesser General Public License along with OpenLSS.
  *	If not, see <http://www.gnu.org/licenses/>.
  */
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Xml;
 
 use DOMDocument;
@@ -96,7 +99,7 @@ class XML2Array
      */
     public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = false)
     {
-        self::$xml = new \DOMDocument(self::$version ?? $version, self::$encoding ?? $encoding);
+        self::$xml = new DOMDocument(self::$version ?? $version, self::$encoding ?? $encoding);
         self::$xml->formatOutput = self::$format_output ?? $format_output;
     }
 
@@ -118,7 +121,7 @@ class XML2Array
         $xml = self::getXMLRoot();
         if (is_string($input_xml)) {
             $parsed = $xml->loadXML($input_xml, $options);
-            if (! $parsed) {
+            if (!$parsed) {
                 throw new Exception('[XML2Array] Error parsing the XML string.');
             }
         } else {
@@ -156,7 +159,7 @@ class XML2Array
 
             case XML_ELEMENT_NODE:
                 // for each child node, call the covert function recursively
-                for ($i = 0, $m = $node->childNodes->length; $i < $m; $i ++) {
+                for ($i = 0, $m = $node->childNodes->length; $i < $m; $i++) {
                     if ($callback !== null) {
                         $callback($m = $node->childNodes->length, $i);
                     }
@@ -166,11 +169,11 @@ class XML2Array
                         $t = $child->tagName;
 
                         // avoid fatal error if the content looks like '<html><body>You are being <a href="https://some.url">redirected</a>.</body></html>'
-                        if (isset($output) && ! is_array($output)) {
+                        if (isset($output) && !is_array($output)) {
                             continue;
                         }
                         // assume more nodes of same kind are coming
-                        if (! isset($output[$t])) {
+                        if (!isset($output[$t])) {
                             $output[$t] = array();
                         }
                         $output[$t][] = $v;
@@ -202,7 +205,7 @@ class XML2Array
                         $a[$attrName] = (string) $attrNode->value;
                     }
                     // if its an leaf node, store the value in @value instead of directly storing it.
-                    if (! is_array($output)) {
+                    if (!is_array($output)) {
                         $output = array(
                             static::$prefix_attributes . 'value' => $output
                         );
@@ -255,4 +258,3 @@ class XML2Array
         self::$version = $version;
     }
 }
-

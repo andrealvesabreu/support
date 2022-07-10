@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Xml;
 
 use Inspire\Support\Message\Serialize\XmlMessage;
@@ -20,7 +22,7 @@ class Xml extends XmlMessage
     public function __construct($data, bool $clearNamespaces = false)
     {
         // Input XML
-        if (! is_string($data) || empty($data)) {
+        if (!is_string($data) || empty($data)) {
             throw new \Exception("'data' must be a non-empty string.");
         }
         /**
@@ -57,7 +59,7 @@ class Xml extends XmlMessage
         libxml_use_internal_errors(true);
         libxml_clear_errors();
         $this->xml = simplexml_load_string($xmlData, '\SimpleXMLElement', LIBXML_COMPACT | LIBXML_NOBLANKS | LIBXML_NOCDATA);
-        if (! empty(libxml_get_errors())) {
+        if (!empty(libxml_get_errors())) {
             throw new \Exception("You must provide a valid XML.");
         }
         $this->stringXml = $xmlData;
@@ -135,7 +137,7 @@ class Xml extends XmlMessage
             $out = null;
         }
         $result = $this->xml->xpath("/{$xpath}");
-        if ($result && ! empty($result)) {
+        if ($result && !empty($result)) {
             if ($index !== null) {
                 if (isset($result[$index])) {
                     $out = $result[$index];
@@ -153,4 +155,3 @@ class Xml extends XmlMessage
         return $out;
     }
 }
-

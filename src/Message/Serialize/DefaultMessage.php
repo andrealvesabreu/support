@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\Serialize;
 
 /**
@@ -37,8 +39,9 @@ abstract class DefaultMessage
     }
 
     /**
+     * Get UUID of message
      *
-     * @return string|NULL
+     * @return string|null
      */
     public function getUUID(): ?string
     {

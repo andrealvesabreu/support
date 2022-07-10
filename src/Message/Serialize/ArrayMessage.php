@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\Serialize;
 
 use Inspire\Support\Arrays;
@@ -9,25 +11,44 @@ use Inspire\Support\Arrays;
  *
  * @author aalves
  */
-class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializable
+class ArrayMessage extends DefaultMessage implements MessageInterface
 {
 
     protected $data = [];
 
     /**
-     *
+     * Constructor can receive data serialized or array
+     * 
      * @param mixed $data
      */
-    public function __construct($data)
+    public function __construct($data, $uuid = false)
     {
-        $this->data = $data;
-        $this->generateUUID(4);
+        if (is_array($data)) {
+            $this->data = $data;
+        } else if (is_string($data) && !empty($data)) {
+            $this->data = unserialize($data);
+        }
+        /**
+         * Generate UUID for message
+         */
+        if ($uuid !== false) {
+            if (is_int($uuid)) {
+                $uuid_version = intval($uuid);
+                if ($uuid_version > 0 && $uuid_version < 6) {
+                    $this->generateUUID($uuid_version);
+                } else {
+                    $this->generateUUID(4);
+                }
+            } else {
+                $this->generateUUID(4);
+            }
+        }
     }
 
     /**
+     * Serialize object
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::serialize()
+     * @return string|null
      */
     public function serialize(): ?string
     {
@@ -35,43 +56,22 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
+     * Unserialize data, returning a new instance of this class
      *
-     * PHP 8.1 support
-     *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::__serialize()
+     * @param [type] $data
+     * @return ArrayMessage
      */
-    public function __serialize(): array
+    public static function unserialize($data): ArrayMessage
     {
-        return $this->data;
+        return new static($data);
     }
 
     /**
+     * Set an array item to a given value using "dot" notation.
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::unserialize()
-     */
-    public function unserialize($data): void
-    {
-        $this->data = unserialize($data);
-    }
-
-    /**
-     * PHP 8.1 support
-     *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::__unserialize()
-     */
-    public function __unserialize($data): void
-    {
-        $this->unserialize($data);
-    }
-
-    /**
-     * Set field in data
-     *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::set()
+     * @param string $field
+     * @param [type] $value
+     * @return array|null
      */
     public function set(string $field, $value): ?array
     {
@@ -79,22 +79,23 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
-     * Set field in data
+     * Set all elements of input array in an array item to a given value using "dot" notation.
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::setList()
+     * @param array $list
+     * @return array|null
      */
     public function setList(array $list): ?array
     {
         foreach ($list as $k => $v) {
             Arrays::set($this->data, $k, $v);
         }
+        return $this->data;
     }
 
     /**
+     * Return entire object data
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::getData()
+     * @return void
      */
     public function getData()
     {
@@ -102,9 +103,11 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
+     * Get data from array using "dot" notation
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::get()
+     * @param string $field
+     * @param [type] $default
+     * @return void
      */
     public function get(string $field, $default = null)
     {
@@ -112,9 +115,11 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
+     * Add a key => value pair to array, if it does not exists
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::add()
+     * @param string $field
+     * @param [type] $value
+     * @return void
      */
     public function add(string $field, $value)
     {
@@ -122,9 +127,10 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
+     * Add multiple items to array, if keys does not exists
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::addList()
+     * @param array $list
+     * @return void
      */
     public function addList(array $list)
     {
@@ -134,13 +140,12 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
     }
 
     /**
+     * Clear all data of object
      *
-     * {@inheritdoc}
-     * @see \Inspire\Support\Message\Serialize\MessageInterface::clear()
+     * @return void
      */
     public function clear()
     {
         $this->data = [];
     }
 }
-

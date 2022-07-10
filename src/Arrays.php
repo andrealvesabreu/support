@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support;
 
 /**
@@ -158,11 +160,11 @@ class Arrays extends \Illuminate\Support\Arr
     {
         if (self::hasNextLevel($arr)) {
             return self::rcFilter($arr, function ($el) {
-                return ! is_null($el);
+                return !is_null($el);
             }, false);
         }
         return array_filter($arr, function ($v) {
-            return ! is_null($v);
+            return !is_null($v);
         });
     }
 
@@ -210,4 +212,3 @@ class Arrays extends \Illuminate\Support\Arr
         return $tmp;
     }
 }
-

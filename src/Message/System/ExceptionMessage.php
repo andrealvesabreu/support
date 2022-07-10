@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support\Message\System;
 
 /**
@@ -26,4 +28,3 @@ class ExceptionMessage extends Message
         $this->type = Message::TYPE_EXCEPTION;
     }
 }
-

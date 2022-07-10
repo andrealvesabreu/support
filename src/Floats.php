@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Inspire\Support;
 
 /**
@@ -10,4 +12,3 @@ namespace Inspire\Support;
 class Floats extends \Nette\Utils\Floats
 {
 }
-
