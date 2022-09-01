@@ -44,8 +44,8 @@ class Xml extends XmlMessage
                 $namespaces = array_unique($matches[1]);
                 foreach ($namespaces as $namespace) {
                     $escaped_namespace = preg_quote($namespace, '~');
-                    $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=[\'].+?[\']~i', null, $xmlData);
-                    $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=["].+?["]~i', null, $xmlData);
+                    $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=[\'].+?[\']~i', '', $xmlData);
+                    $xmlData = preg_replace('~[\s]xmlns:' . $escaped_namespace . '=["].+?["]~i', '', $xmlData);
                     $xmlData = preg_replace('~([\'"\s])' . $escaped_namespace . ':~i', '$1' . $namespace . '_', $xmlData);
                 }
             }
