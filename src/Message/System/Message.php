@@ -252,7 +252,7 @@ abstract class Message
      */
     public function addExtra(string $extra, $value)
     {
-        Arrays::add($this->extra, $extra, $value);
+        $this->extra = Arrays::add($this->extra, $extra, $value);
     }
 
     /**
@@ -263,7 +263,7 @@ abstract class Message
     public function addExtras(array $extra)
     {
         foreach ($extra as $k => $v) {
-            Arrays::add($this->extra, $k, $v);
+            $this->extra = Arrays::add($this->extra, $k, $v);
         }
     }
 

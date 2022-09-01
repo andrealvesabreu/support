@@ -123,7 +123,8 @@ class ArrayMessage extends DefaultMessage implements MessageInterface
      */
     public function add(string $field, $value)
     {
-        return Arrays::add($this->data, $field, $value);
+        $this->data = Arrays::add($this->data, $field, $value);
+        return $this->data;
     }
 
     /**
@@ -135,8 +136,9 @@ class ArrayMessage extends DefaultMessage implements MessageInterface
     public function addList(array $list)
     {
         foreach ($list as $k => $v) {
-            Arrays::set($this->data, $k, $v);
+            $this->data = Arrays::add($this->data, $k, $v);
         }
+        return !empty($list);
     }
 
     /**
