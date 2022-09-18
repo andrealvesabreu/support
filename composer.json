@@ -11,7 +11,7 @@
 	"require" : {
 		"php" : ">=7.4",
 		"nette/utils" : "3.2.7",
-		"neitanod/forceutf8" : "2.0",
+		"neitanod/forceutf8" : "~2.0",
 		"ramsey/uuid" : "4.2.3",
 		"illuminate/support" : "8.83.7"
 	},
