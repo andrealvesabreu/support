@@ -9,10 +9,10 @@
 	"description" : "Utilities for basic tasks, complements Inspire packages",
 	"license" : "MIT",
 	"require" : {
-		"php" : ">=7.4",
+		"php" : ">=8.1",
 		"nette/utils" : "~3.2",
 		"neitanod/forceutf8" : "~2.0",
-		"ramsey/uuid" : "4.2.3",
+		"ramsey/uuid" : "~4",
 		"illuminate/support" : "~9"
 	},
 	"authors" : [{
