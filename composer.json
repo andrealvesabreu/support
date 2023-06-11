@@ -13,7 +13,7 @@
 		"nette/utils" : "~3.2",
 		"neitanod/forceutf8" : "~2.0",
 		"ramsey/uuid" : "~4",
-		"illuminate/support" : "~9"
+		"illuminate/support" : ">=9"
 	},
 	"authors" : [{
 			"name" : "André Alves",
